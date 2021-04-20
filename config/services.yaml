@@ -29,3 +29,24 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Services\FileUploader:
+        arguments:
+            $targetDirectory: '../public/uploads/'
+            $targetUrl: '/uploads/'
+    
+    # qis.listener.deletedPersister:
+    #     class: AppBundle\Doctrine\DeletedPersister
+    #     arguments:
+    #         - "@annotation_reader"
+    #         - "@security.token_storage"                    
+    #     tags:
+    #         - { name: doctrine.event_listener, event: prePersist }
+
+    AppBundle\Doctrine\Configurator:
+        # class: AppBundle\Doctrine\Configurator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@annotation_reader"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
