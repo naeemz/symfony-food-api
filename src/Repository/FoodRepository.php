@@ -19,6 +19,13 @@ class FoodRepository extends ServiceEntityRepository
         parent::__construct($registry, Food::class);
     }
 
+    public function sortedBy($fieldName, $orderBy)
+    {
+        return $this->createQueryBuilder('f')
+                ->orderBy('f.'.$fieldName, $orderBy)
+                ->getQuery()
+                ->getResult();
+    }
     // /**
     //  * @return Food[] Returns an array of Food objects
     //  */

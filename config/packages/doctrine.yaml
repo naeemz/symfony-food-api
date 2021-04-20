@@ -23,4 +23,4 @@ doctrine:
                 enabled: true
             # global_sort_filter:
             #     class:  AppBundle\Doctrine\GlobalSortFilter
-            #     enabled: true
+            #     enabled: false

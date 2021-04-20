@@ -16,12 +16,12 @@ class Configurator
     {
         $this->em           = $em;
         $this->reader       = $reader;
-        $this->requestStack = $requestStack;
+        $this->requestStack = $requestStack;    
     }
 
     public function onKernelRequest()
     {
-        // sorting filter
+        // // sorting filter
         // $request = $this->requestStack->getCurrentRequest();
         // $allQueries = $request->query->all();
         // //
@@ -35,7 +35,7 @@ class Configurator
         //         break;
         //     }
         // }
-
+        
         $filter = $this->em->getFilters()->enable('deleted_filter');
         $filter->setAnnotationReader($this->reader);
     }

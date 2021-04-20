@@ -41,9 +41,28 @@ class FoodController extends AbstractController
     /**
      * @Route("/food", name="food_list", methods={"GET"})
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->foodRepository->findAll();
+        $allQueries = $request->query->all();
+        //
+        if($allQueries) { // if request query 
+            // loop through queries to find out which query is for sorting
+            foreach($allQueries as $key => $val ) {
+                // convert to uppercase for comparison 
+                $valUpper = strtoupper($val);
+                // if query have asc or desc value then send it's 
+                // key and value to sortedBy function 
+                if( $valUpper == 'ASC' || $valUpper == 'DESC' ) {
+                    $data = $this->foodRepository->sortedBy($key, $valUpper);
+                    // exit loop
+                    break;
+                }
+            }
+        } else {
+            //
+            $data = $this->foodRepository->findAll();
+        }
+        // response
         return $this->response($data);
     }
 
@@ -186,7 +205,7 @@ class FoodController extends AbstractController
             $food->setDescription( $request->get('description') );
             $food->setPrice( $request->get('price') );
             $food->setServingPerPerson( $request->get('serving_per_person') );
-            $food->setUpdatedAt();
+            $food->setUpdatedAt(new \DateTime());
             if($imageFileName!=null)
                 $food->setImageUrl( $imageFileName );
             //

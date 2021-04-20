@@ -35,11 +35,8 @@ services:
             $targetDirectory: '../public/uploads/'
             $targetUrl: '/uploads/'
     
-    # qis.listener.deletedPersister:
-    #     class: AppBundle\Doctrine\DeletedPersister
-    #     arguments:
-    #         - "@annotation_reader"
-    #         - "@security.token_storage"                    
+    # qis.listener.globalSortFilter:
+    #     class: AppBundle\Doctrine\GlobalSortPersister
     #     tags:
     #         - { name: doctrine.event_listener, event: prePersist }
 

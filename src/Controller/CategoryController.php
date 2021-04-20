@@ -42,7 +42,26 @@ class CategoryController extends AbstractController
      */
     public function index()
     {
-        $data = $this->categoryRepository->findAll();
+        $allQueries = $request->query->all();
+        //
+        if($allQueries) { // if request query 
+            // loop through queries to find out which query is for sorting
+            foreach($allQueries as $key => $val ) {
+                // convert to uppercase for comparison 
+                $valUpper = strtoupper($val);
+                // if query have asc or desc value then send it's 
+                // key and value to sortedBy function 
+                if( $valUpper == 'ASC' || $valUpper == 'DESC' ) {
+                    $data = $this->categoryRepository->sortedBy($key, $valUpper);
+                    // exit loop
+                    break;
+                }
+            }
+        } else {
+            //
+            $data = $this->categoryRepository->findAll();
+        }
+        // response
         return $this->response($data);
     }
 
@@ -60,7 +79,6 @@ class CategoryController extends AbstractController
     {
         // prepare
         $input = $request->request->all();
-        if( $request->files->get('image') ) $input = $input + ['image'=>$request->files->get('image')];
         $constraint = CategoryRequest::rules();
         //
         $errors = $this->validator->validate($input, $constraint);
@@ -74,7 +92,7 @@ class CategoryController extends AbstractController
                 Response::HTTP_BAD_REQUEST
             );
         }
-        //        
+        //
         try {
             //
             $request = $this->transformJsonBody($request);
@@ -84,7 +102,7 @@ class CategoryController extends AbstractController
             //
             $this->entityManager->persist($category);
             $this->entityManager->flush();
-            // else data is valid
+            //
             return $this->response($category, Response::HTTP_CREATED);            
         } catch (\Exception $e){
             $data = [
@@ -110,4 +128,82 @@ class CategoryController extends AbstractController
         return $this->response($category, Response::HTTP_OK);
     }
 
+        /**
+     * @Route("/category/{id}/update", name="category_update", methods={"PUT", "PATCH", "POST"})
+     */
+    public function update(
+                                int $id, 
+                                Request $request, 
+                                ValidatorInterface $validator,
+                            ) : JsonResponse 
+    {
+        $category = $this->categoryRepository->find($id);
+        //
+        if(!$category) {
+            $data = ['errors' => "Category not found for ID = $id"];
+            return $this->response($data, Response::HTTP_BAD_REQUEST);
+        }
+        // prepare
+        $input = $request->request->all();
+        $constraint = CategoryRequest::rules();
+        //
+        $errors = $this->validator->validate($input, $constraint);
+        //
+        if ($errors->count() > 0) {
+            foreach($errors as $error) {
+                $msgs[$error->getPropertyPath()][] = $error->getMessage();
+            }
+            return $this->response(
+                $msgs,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+        //
+        try {
+            $request = $this->transformJsonBody($request);
+            //
+            $category->setName( $request->get('name') );
+            $category->setUpdatedAt(new \DateTime());
+            $this->entityManager->persist($category);
+            //
+            $this->entityManager->flush();
+            //
+            return $this->response($category, Response::HTTP_CREATED);            
+        } catch (\Exception $e){
+            $data = [
+                'errors' => $e->getMessage(),
+            ];
+            //
+            return $this->response($data, Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * @Route("/category/{id}", name="category_destroy", methods={"DELETE"})
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        // check record
+        $category = $this->categoryRepository->find($id);
+        //
+        if(!$category) {
+            $data = ['errors' => "Category not found for ID = $id"];
+            return $this->response($data, Response::HTTP_BAD_REQUEST);
+        }
+        
+        try{
+            // destroy
+            $category->setDeletedAt(new \DateTime());
+            $this->entityManager->persist($category);
+            $this->entityManager->flush();
+            //
+            return $this->response(['message'=>'Record deleted successfully.'], Response::HTTP_CREATED); 
+        } catch (\Exception $e){
+            $data = [
+                'errors' => $e->getMessage(),
+            ];
+            //
+            return $this->response($data, Response::HTTP_BAD_REQUEST);
+        }
+    }
 }

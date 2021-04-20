@@ -20,14 +20,20 @@ class GlobalSortFilter extends SQLFilter
         //
         $fieldName      = $this->getParameter('fieldName');
         $sortByOrder    = $this->getParameter('sortField');
-
+        // get column names of current entity 
+        // to compare and find if column exists
+        $columnNames = $targetEntity->getColumnNames();
+        // TODO: Check if column name exists
+        //
         if (empty($fieldName)) {
             return '';
         }
 
+        // TODO: Edit query to include ORDER BY
+        // below is not correct because SQLFilter only allows where clause statements
         //$query = sprintf(' ORDER BY %s.%s %s', $targetTableAlias, $fieldName, $sortByOrder);
-
         //return $query;
+        
         return '';
     }
 

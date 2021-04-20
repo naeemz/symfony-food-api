@@ -1,0 +1,5 @@
+global_sort_order:
+    driver: doctrine/orm
+    classes:
+        order:
+            repository: App\Repository\GlobalSortRepository
