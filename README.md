@@ -3,7 +3,7 @@ Foods with multiple Categories can be add/update/delete/retrieve and sort by any
 
 ## Features:
 - Create, Retrieve, Update, Delete (Soft Delete)
-- Dynamic sorting i.e. You can sort by any field of any table (127.0.0.1:8000/api/food?name=desc)
+- Dynamic sorting i.e. You can sort by any field of any table ``` 127.0.0.1:8000/api/food?name=desc ```
 - Dynamic Soft Delete option for Entity using Annotation i.e. user can specify using (annotation) that which column of Entity is for soft delete like **deleted_at** or **is_active** or **status**
 - Validation using separate request rules class for each controller
 - Foods can have multiple Categories and can be updated synchronously
