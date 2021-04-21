@@ -1,56 +1,64 @@
-# symfony-food-api
- Symfony Food API CRUD
+# Symfony Food API CRUD
+This is an example of how to create CRUD API using Symfony
+
+## Features:
+- Create, Update, Delete (Soft Delete)
+- Dynamic sorting i.e. You can sort by any field of any table
+- Foods can have multiple Categories and can be updated synchronously
+> More awesome features can be added easily using same pattern used 👍 ✔
 
 
-Update .env file with SITE_URL=
+# Installation
+```sh
+clone https://github.com/naeemz/symfony-food-api.git
+cd symfony-food-api
+composer install
+```
+> Note: `Update .env file with DB info & include SITE_URL=`
+```cmd
+php bin/console doctrine:migrations:migrate
+symfony server:start
+127.0.0.1:8000
+```
+## API endpoints
+```For example your app run on default port = 127.0.0.1:8000```
 
-API endpoints
+| Feature | HTTP Request | Endpoint | 
+| ------ | ------ | ------ |
+| All Food | GET | 127.0.0.1:8000/api/food |
+| One Food | GET | 127.0.0.1:8000/api/food/1 |
+| Add Food | POST | 127.0.0.1:8000/api/food |
+| Update Food | POST | 127.0.0.1:8000/api/food/1/update |
+| Delete Food | DELETE | 127.0.0.1:8000/api/food/1 |
+| Sort Any Field | GET | 127.0.0.1:8000/api/food?created_at=desc |
+| Sort Any Food | GET | 127.0.0.1:8000/api/food?name=asc |
+>` Similar HTTP requests can be used for 127.0.0.1:8000/api/category`
+## Json Data in HTTP requests
 
-
-###
-POST http://127.0.0.1:8000/api/category HTTP/1.1
-Content-Type: application/json
-
-{
-    "name" : "Appetizer"
-}
-
-###
-GET http://127.0.0.1:8000/api/category HTTP/1.1
-Content-Type: application/json
-
-###
-GET http://127.0.0.1:8000/api/food HTTP/1.1
-Content-Type: application/json
-
-###
-GET http://127.0.0.1:8000/api/food/1 HTTP/1.1
-
-###
-POST http://127.0.0.1:8000/api/food HTTP/1.1
-content-type: application/json
-
+#### Add Food
+```sh
+POST 127.0.0.1:8000/api/food
 {
     "name": "Pizza Spicy Large",
     "description": "Spicy Pizza with rich cheese and BBQ chicken",
     "price": "24",
-    "serving_per_person": 2,
-    "image": File,
-    "categories": [1,3]
+    "serving_per_person": 2, //optional
+    "image": File, //optional
+    "categories": [1,3] //optional
 }
-
-### 
-POST http://127.0.0.1:8000/api/food/1/update
-Content-Type: application/json
-
+```
+#### Update Food
+```sh
+POST 127.0.0.1:8000/api/food/1
 {
-    "name": "Pizza Spicy Medium",
-    "description": "Updated description",
-    "price": "20", 
+    "name": "Pizza Spicy Large",
+    "description": "Spicy Pizza with rich cheese and BBQ chicken",
+    "price": "24",
+    "serving_per_person": 2, //optional
+    "image": File, //optional
+    "categories": [1,3] //optional
 }
+```
+## License
 
-
-###
-DELETE http://127.0.0.1:8000/api/food HTTP/1.1
-
-
+MIT
