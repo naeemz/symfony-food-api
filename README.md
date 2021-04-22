@@ -28,6 +28,7 @@ symfony server:start
 
 | Feature | HTTP Request | Endpoint | 
 | ------ | ------ | ------ |
+| Add Category | POST | 127.0.0.1:8000/api/category |
 | All Food | GET | 127.0.0.1:8000/api/food |
 | One Food | GET | 127.0.0.1:8000/api/food/1 |
 | Add Food | POST | 127.0.0.1:8000/api/food |
@@ -38,6 +39,13 @@ symfony server:start
 >` Similar HTTP requests can be used for 127.0.0.1:8000/api/category`
 ## Json Data in HTTP requests
 
+#### Add Category
+```sh
+POST 127.0.0.1:8000/api/category
+{
+    "name": "Best Seller",
+}
+```
 #### Add Food
 ```sh
 POST 127.0.0.1:8000/api/food
