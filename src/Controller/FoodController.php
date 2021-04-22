@@ -205,7 +205,6 @@ class FoodController extends AbstractController
             $food->setDescription( $request->get('description') );
             $food->setPrice( $request->get('price') );
             $food->setServingPerPerson( $request->get('serving_per_person') );
-            $food->setUpdatedAt(new \DateTime());
             if($imageFileName!=null)
                 $food->setImageUrl( $imageFileName );
             //

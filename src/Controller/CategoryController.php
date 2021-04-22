@@ -134,7 +134,7 @@ class CategoryController extends AbstractController
     public function update(
                                 int $id, 
                                 Request $request, 
-                                ValidatorInterface $validator,
+                                ValidatorInterface $validator
                             ) : JsonResponse 
     {
         $category = $this->categoryRepository->find($id);
@@ -163,7 +163,6 @@ class CategoryController extends AbstractController
             $request = $this->transformJsonBody($request);
             //
             $category->setName( $request->get('name') );
-            $category->setUpdatedAt(new \DateTime());
             $this->entityManager->persist($category);
             //
             $this->entityManager->flush();
