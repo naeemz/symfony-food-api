@@ -40,7 +40,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category", name="category", methods={"GET"})
      */
-    public function index()
+    public function index(Request $request)
     {
         $allQueries = $request->query->all();
         //
